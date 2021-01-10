@@ -1,0 +1,9 @@
+{
+    "name": "Friend List",
+    "short_name": "Friends",
+    "description": "A fake PWA style app for displaying random contacts",
+    "orientation": "portrait",
+    "display": "standalone",
+    "theme_color": "#ffffff",
+    "background_color": "#ffffff"
+}
