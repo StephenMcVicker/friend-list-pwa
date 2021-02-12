@@ -1,6 +1,9 @@
 <template lang="pug">
   #app
     .contact-list
+      .no-friends(v-if="users.length < 1") 
+        h1 No friends 😢
+        h2 Use to Menu to fetch some new ones
       .box(v-for="user in users")
         .profile-pic
           img(alt="profile-pic"
@@ -8,7 +11,17 @@
         .text
           h3 {{ getFullNameForUser(user) }}
           .status
-    hamburger-menu
+          button(@click="removeUser(user)") REMOVE
+    hamburger-menu(:menuIsOpen="menuIsOpen" 
+                   @toggle-menu="menuIsOpen = !menuIsOpen")
+    transition(name="fade")
+      .menu(v-if="menuIsOpen === true")
+        ul
+          li item 1
+          li item 2
+          li item 3
+          li item 4
+        button(@click="fetchRandomUsers") Get New Friends
 </template>
 <script>
 import HamburgerMenu from "../src/components/Navigation/HamburgerMenu.vue";
@@ -21,6 +34,7 @@ export default {
   },
   data() {
     return {
+      menuIsOpen: false,
       numOfUsersToFetch: 10,
       users: []
     };
@@ -36,6 +50,12 @@ export default {
     },
     getFullNameForUser: function(user) {
       return `${user.name.first} ${user.name.last}`;
+    },
+    removeUser: function(user) {
+      console.log("Removing..", this.getFullNameForUser(user));
+      this.users = this.users.filter(function(usr) {
+        return usr != user;
+      });
     }
   }
 };
@@ -105,6 +125,7 @@ body {
 .contact-list {
   align-items: center;
   border-radius: 10px;
+  color: white;
   display: flex;
   flex-direction: column;
   height: 80%;
@@ -155,6 +176,40 @@ body {
       margin-bottom: 1rem;
     }
   }
+}
+
+.menu {
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  bottom: 1rem;
+  min-width: 200px;
+  padding: 1rem 2rem;
+  position: absolute;
+  right: 60px;
+  transform-origin: bottom right;
+  transition: all 0.3s;
+  z-index: 99;
+}
+
+.no-friends {
+  padding: 2rem;
+  text-align: center;
+
+  :first-child {
+    margin-bottom: 2rem;
+  }
+}
+
+// Animations
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform: scale(0);
 }
 
 @media only screen and (max-width: 769px) {

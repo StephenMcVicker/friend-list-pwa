@@ -1,16 +1,18 @@
 <template lang="pug">
-  .hamburger(@click="isOpen = !isOpen")
-    div(:data-open="isOpen")
-    div(:data-open="isOpen")
-    div(:data-open="isOpen")
+  .hamburger(@click="$emit('toggle-menu');")
+    div(:data-open="menuIsOpen")
+    div(:data-open="menuIsOpen")
+    div(:data-open="menuIsOpen")
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      isOpen: false
-    };
+  props: {
+    menuIsOpen: {
+      default: false,
+      type: Boolean,
+      required: false
+    }
   }
 };
 </script>
