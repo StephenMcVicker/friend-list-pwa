@@ -1,5 +1,8 @@
 # friend-list
 
+![Screenshot](screenshot.png)
+Screenshot
+
 During covid, it is always nice to have some friends.
 This will randomly generate a list of friends for you to scroll through, but more importantly, to remove them from your list and even fetch for some new ones 😎😂.
 
