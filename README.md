@@ -13,6 +13,8 @@ Seriously though, the goal with this project was to make a simple vue 2 app that
 
 Anything else, such as the fetching, menu, and some of the css glass look was just a bit of fun and practice. 
 
+Best viewed on mobile, although has a small bit of code for responsive desktop.
+
 ## Tech
 
 Vue 2 (with PUG for HTML Template), [RandomUser API](https://randomuser.me/).
