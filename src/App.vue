@@ -1,51 +1,60 @@
 <template lang="pug">
-  #app
-    .contact-list
-      .no-friends(v-if="users.length < 1") 
-        h1 No friends 😢
-        h2 Use to Menu to fetch some new ones
-      .box(v-for="user in users")
+#app
+  loading-spinner(v-if='isLoading')
+  .contact-list
+    .no-friends(v-if='users.length < 1 && isLoading != true') 
+      h1 No friends 😢
+      h2 Use to Menu to fetch some new ones
+    transition-group(name='fade' v-else)
+      .box(v-for='(user, index) in users'
+           :key='index')
         .profile-pic
-          img(alt="profile-pic"
-              :src="user.picture.large")
+          img(alt='profile-pic', :src='user.picture.large')
         .text
           h3 {{ getFullNameForUser(user) }}
           .status
-          button(@click="removeUser(user)") REMOVE
-    hamburger-menu(:menuIsOpen="menuIsOpen" 
-                   @toggle-menu="menuIsOpen = !menuIsOpen")
-    transition(name="fade")
-      .menu(v-if="menuIsOpen === true")
-        ul
-          li item 1
-          li item 2
-          li item 3
-          li item 4
-        button(@click="fetchRandomUsers") Get New Friends
+          button(@click='removeUser(user)') REMOVE
+  hamburger-menu(:menuIsOpen='menuIsOpen',
+                 @toggle-menu='menuIsOpen = !menuIsOpen')
+  transition(name='fade')
+    .menu(v-if='menuIsOpen === true')
+      h4 Fake menu Popover
+      ul
+        li Use button below
+        li To generate
+        li a new list
+        li of random "friends"
+      button.primary(@click='fetchRandomUsers') Get New Friends
 </template>
 <script>
-import HamburgerMenu from "../src/components/Navigation/HamburgerMenu.vue";
+import HamburgerMenu from "../src/components/navigation/HamburgerMenu.vue";
+import LoadingSpinner from "../src/components/widgets/LoadingSpinner.vue";
 
 export default {
   name: "App",
-  components: { HamburgerMenu },
+  components: { HamburgerMenu, LoadingSpinner },
   beforeMount() {
     this.fetchRandomUsers();
   },
   data() {
     return {
+      isLoading: false,
       menuIsOpen: false,
       numOfUsersToFetch: 10,
       users: []
     };
   },
   methods: {
-    fetchRandomUsers: function() {
+    fetchRandomUsers: async function() {
+      if (this.menuIsOpen) this.menuIsOpen = false;
+      this.isLoading = true;
+      this.users = [];
       fetch(`https://randomuser.me/api/?results=${this.numOfUsersToFetch}`)
         .then(response => response.json())
         .then(data => {
           console.log(data.results);
           this.users = data.results;
+          this.isLoading = false;
         });
     },
     getFullNameForUser: function(user) {
@@ -112,6 +121,38 @@ body {
   }
 }
 // **
+
+button {
+  background: none;
+  border: 1px solid white;
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  &:active {
+    background: white;
+    color: black;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &.primary {
+    border-color: #fc00ff;
+    color: black;
+
+    &:active {
+      background: #00dbde;
+      color: white;
+    }
+  }
+}
 
 #app {
   align-items: center;
